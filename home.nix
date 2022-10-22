@@ -28,14 +28,28 @@ in
     # let Home Manager manage fonts:
     fonts.fontconfig.enable = true;
     
+    # gtk = {
+    #     enable = true;
+    #     # font.name = "Victor Mono SemiBold 12";
+    #     theme = {
+    #         name = "nordic";
+    #         package = pkgs.nordic;
+    #     };
+    # };
+    
     
     home.packages = [
       # pkgs is the set of all packages in the default home.nix implementation
+      pkgs.fzf
+      pkgs.delta
       pkgs.ripgrep
       pkgs.tmux
       pkgs.mosh
       pkgs.nodejs
       pkgs.black
+      # these are needed for neovim system clipboard:
+      pkgs.xclip
+      pkgs.wl-clipboard
       # fonts
       (pkgs.nerdfonts.override { fonts = [ "JetBrainsMono" "FiraCode" ]; })
     ];
@@ -52,6 +66,7 @@ in
         extraConfig = {
           # Use vim as our default git editor
           core.editor = "nvim";
+          core.pager = "delta";
           # Cache git credentials for 15 minutes
           credential.helper = "cache";
           init = {
