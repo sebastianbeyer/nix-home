@@ -3,6 +3,13 @@
 let
   # import extra files
   customNeovim = import ./nixfiles/nvim.nix;
+  nvim-snakemake = builtins.fetchurl {
+      url = "https://raw.githubusercontent.com/snakemake/snakemake/main/misc/vim/syntax/snakemake.vim";
+      # sha256 = "abfb9702b98d887c175ace58f1ab39733dc08d03b674d914f56344ef86e63b61";
+  };
+  nvim-snakemake-detect = builtins.fetchurl {
+      url = "https://raw.githubusercontent.com/snakemake/snakemake/main/misc/vim/ftdetect/snakemake.vim";
+  };
 
 in
   {
@@ -42,6 +49,7 @@ in
       # pkgs is the set of all packages in the default home.nix implementation
       pkgs.fzf
       pkgs.delta
+      pkgs.foot
       pkgs.ripgrep
       pkgs.tmux
       pkgs.mosh
@@ -75,7 +83,11 @@ in
         };
       };
 
-    programs.neovim = customNeovim pkgs;
+      programs.neovim = customNeovim pkgs;
+      # nvim snakemake syntax
+      home.file."${config.xdg.configHome}/nvim/syntax/snakemake.vim".source = nvim-snakemake;
+      home.file."${config.xdg.configHome}/nvim/ftdetect/snakemake.vim".source = nvim-snakemake-detect;
+      
   }
 
 
